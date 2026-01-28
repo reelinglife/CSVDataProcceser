@@ -13,6 +13,9 @@ CSVŒ`®‚Ì”„ãƒf[ƒ^‚ğ“Ç‚İ‚İAƒOƒŠƒbƒh•\¦‚¨‚æ‚Ñƒf[ƒ^‚Ì©“®“Œvi‘”„ã‚ÌZo
 - **©“®ŒvZ‹@”\**: Šes‚Ì‡Œv‹àŠzi’P‰¿~”—Êj‚¨‚æ‚ÑA“Ç‚İ‚ñ‚¾‘Sƒf[ƒ^‚Ì‘”„ã‚ğƒŠƒAƒ‹ƒ^ƒCƒ€‚ÉWŒv
 - **ƒ‚ƒ_ƒ“UI**: Material Design‚ğÌ—p‚µA’¼Š´“I‚Å´Œ‰Š´‚Ì‚ ‚éƒ†[ƒU[ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğ’ñ‹Ÿ
 
+## ƒvƒŒƒrƒ…[
+![ƒAƒvƒŠ‚ÌƒXƒNƒŠ[ƒ“ƒVƒ‡ƒbƒg](https://github.com/user-attachments/assets/46dd6017-0cb9-4489-a1a2-959bbc134b18)
+
 ## ‹ZpƒXƒ^ƒbƒN
 - **Language**: C# / .NET 8
 - **Framework**: WPF (Windows Presentation Foundation)
