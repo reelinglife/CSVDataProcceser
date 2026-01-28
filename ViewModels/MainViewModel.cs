@@ -20,7 +20,11 @@ namespace CsvDataProcessor.ViewModels
         // 2. プロパティ：ステータスバーなどに表示するメッセージ
         // [ObservableProperty]属性によって裏でStatusMessageプロパティが自動生成され、TextBlock等でText="{Binding StatusMessage}"とすることでテキスト表示する
         [ObservableProperty]
-        private string _statusMessage = "CSVファイルを選択してください。"; 
+        private string _statusMessage = "CSVファイルを選択してください。";
+
+        // 追加：総売上金額を保持するプロパティ
+        [ObservableProperty]
+        private decimal _totalSales;
 
         public MainViewModel()
         {
@@ -45,7 +49,9 @@ namespace CsvDataProcessor.ViewModels
                     var data = _csvService.ReadCsv(openFileDialog.FileName);
 
                     // 画面表示用のリストを更新
-                    Records = [.. data];
+                    Records = [.. data]; //Records = new ObservableCollection<CsvRecord>(data);
+                    // LINQで全行の TotalAmount を合計する
+                    TotalSales = data.Sum(x => x.TotalAmount);
                     StatusMessage = $"{data.Count} 件のデータを読み込みました。";
                 }
                 catch (Exception ex)

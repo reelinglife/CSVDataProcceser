@@ -8,8 +8,10 @@
         Title="CSV Sales Data Processor" Height="600" Width="1000"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{md:MaterialDesignFont}">
-
+        FontFamily="{StaticResource MaterialDesignFont}"
+        FontWeight="Medium"
+        xmlns:vm="clr-namespace:CsvDataProcessor.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=True}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -49,7 +51,17 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-
+        <Border Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                Margin="20" Padding="20" CornerRadius="10" Background="White"
+                Effect="{StaticResource MaterialDesignShadowDepth2}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="総売上合計：" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+                <TextBlock Text="{Binding TotalSales, StringFormat={}{0:N0}円}"
+                           Foreground="#673AB7"
+                           FontWeight="Bold"
+                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+            </StackPanel>
+        </Border>
         <StatusBar Grid.Row="2">
             <StatusBarItem>
                 <TextBlock Text="{Binding StatusMessage}" />
