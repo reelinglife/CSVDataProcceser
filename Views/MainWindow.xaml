@@ -1,0 +1,59 @@
+﻿<Window x:Class="CsvDataProcessor.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="CSV Sales Data Processor" Height="600" Width="1000"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{md:MaterialDesignFont}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <md:ColorZone Mode="PrimaryMid" Padding="16">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="売上データ加工ツール" VerticalAlignment="Center" 
+                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Margin="32,0,0,0" Content="CSVファイルを開く"
+                        Command="{Binding OpenFileCommand}" />
+            </StackPanel>
+        </md:ColorZone>
+
+        <DataGrid Grid.Row="1" Margin="16"
+                  ItemsSource="{Binding Records}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  Style="{StaticResource MaterialDesignDataGrid}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="日付" Binding="{Binding Date, StringFormat={}{0:yyyy/MM/dd}}" Width="Auto"/>
+                <DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="*"/>
+                <DataGridTextColumn Header="カテゴリ" Binding="{Binding Category}" Width="Auto"/>
+                <DataGridTextColumn Header="単価" Binding="{Binding Price, StringFormat={}{0:N0}円}" Width="Auto"/>
+                <DataGridTextColumn Header="数量" Binding="{Binding Quantity}" Width="Auto"/>
+                <DataGridTextColumn Header="合計金額" Binding="{Binding TotalAmount, StringFormat={}{0:N0}円}" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusMessage}" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

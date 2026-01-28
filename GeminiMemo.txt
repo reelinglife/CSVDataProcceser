@@ -1,0 +1,46 @@
+Geminiに聞いたメモ
+・MVVMのツリー構造について
+CsvDataProcessor(ソリューションルート)
+│
+├── .gitignore<- Git管理に不要なファイルを除外（VSが自動生成）
+├── README.md<- ★アプリの説明や使い方を書く重要ファイル
+│
+└── CsvDataProcessor(プロジェクトフォルダ)
+    │
+    ├── App.xaml<- アプリ全体の共通設定
+    │
+    ├── Models/             <- 【データ担当】
+    │   └── CsvRecord.cs<- CSVの1行分のデータを定義するクラス
+    │
+    ├── ViewModels/         <- 【仲介・ロジック担当】
+    │   ├── ViewModelBase.cs<- CommunityToolkit.Mvvmを継承したベース
+    │   └── MainViewModel.cs<- 画面のボタン動作やデータ保持のメインロジック
+    │
+    ├── Views/              <- 【見た目担当】
+    │   └── MainWindow.xaml<- メイン画面のUIレイアウト
+    │
+    ├── Services/           <- 【裏方・便利機能担当】
+    │   └── CsvService.cs<- CSVファイルの読み書き専用の処理
+    │
+    └── Helpers/            <- 【補助担当】
+        └── BooleanToVisibilityConverter.cs<- UIの表示切り替えなどの部品
+
+Models（モデル）
+純粋なデータ構造だけを書きます。ここには「ボタンを押した時の処理」などは一切書きません。
+
+ViewModels（ビューモデル）
+ここがあなたの腕の見せ所です。ObservableProperty を使って画面に反映させる変数を作ったり、RelayCommand でボタンが押された時の処理を書きます。
+
+Services（サービス）
+ViewModelに「CSVの読み込みロジック」を直接書くとコードが長くなるので、ここに切り出します。これをやるだけで「設計を意識しているエンジニア」として評価が上がります。
+
+
+
+・XAMLのStringFormatの書き方例
+書き方	                    表示結果（150000の場合）	解説
+{Binding Price}	            150000	                    生のデータのまま
+StringFormat={}{0:N0}	    150,000	                    カンマ区切り
+StringFormat={}{0:N2}	    150,000.00	                小数点2桁まで
+StringFormat={}{0:C}	    ¥150,000	               通貨形式（PC設定に従う）
+StringFormat={}{0:N0}円	    150,000円	                カンマ ＋ 単位
+※{}はエスケープシーケンス
