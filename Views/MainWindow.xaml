@@ -26,6 +26,21 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}"
                         Margin="32,0,0,0" Content="CSVファイルを開く"
                         Command="{Binding OpenFileCommand}" />
+                <ComboBox Margin="32,0,0,0" Width="150"
+                          md:HintAssist.Hint="カテゴリで絞り込み"
+                          md:TextFieldAssist.UnderlineBrush="White"
+                          ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory}"
+                          Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                    <ComboBox.Foreground>
+                        <SolidColorBrush Color="White" />
+                    </ComboBox.Foreground>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}">
+                            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
             </StackPanel>
         </md:ColorZone>
 
