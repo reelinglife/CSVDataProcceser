@@ -26,6 +26,13 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}"
                         Margin="32,0,0,0" Content="CSVファイルを開く"
                         Command="{Binding OpenFileCommand}" />
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="#4CAF50" BorderBrush="#4CAF50"
+                        Margin="16,0,0,0" Content="上書き保存"
+                        Command="{Binding SaveFileCommand}" />
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Margin="16,0,0,0" Content="データを追加"
+                        Command="{Binding ShowAddWindowCommand}" />
                 <ComboBox Margin="32,0,0,0" Width="150"
                           md:HintAssist.Hint="カテゴリで絞り込み"
                           md:TextFieldAssist.UnderlineBrush="White"

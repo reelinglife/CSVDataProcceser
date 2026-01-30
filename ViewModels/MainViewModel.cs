@@ -38,6 +38,12 @@ namespace CsvDataProcessor.ViewModels
         [ObservableProperty]
         private string? _selectedCategory;
 
+        // 現在のファイルパスを保持するプライベート変数
+        private string? _currentFilePath;
+
+        // ボタンが押せるかどうかを判定するロジック
+        private bool CanExecuteFileOps() => !string.IsNullOrEmpty(_currentFilePath);
+
         public MainViewModel()
         {
             _csvService = new CsvService();
@@ -57,6 +63,8 @@ namespace CsvDataProcessor.ViewModels
             {
                 try
                 {
+                    // パスを記憶しておく
+                    _currentFilePath = openFileDialog.FileName;
                     // Serviceを使ってデータを読み込む
                     var data = _csvService.ReadCsv(openFileDialog.FileName);
                     // Private変数に全データを保存
@@ -71,6 +79,10 @@ namespace CsvDataProcessor.ViewModels
                     SelectedCategory = "すべて";
 
                     ApplyFilter();
+
+                    // ボタンの状態（CanExecute）が変化したことを通知する
+                    SaveFileCommand.NotifyCanExecuteChanged();
+                    ShowAddWindowCommand.NotifyCanExecuteChanged();
                 }
                 catch (Exception ex)
                 {
@@ -100,6 +112,57 @@ namespace CsvDataProcessor.ViewModels
             // 合計金額もフィルタ後の内容で再計算
             TotalSales = filtered.Sum(x => x.TotalAmount);
             StatusMessage = $"{filtered.Count()} 件を表示中";
+        }
+
+        [RelayCommand(CanExecute = nameof(CanExecuteFileOps))] //追加コマンドに、判定メソッドを紐付け
+        private void ShowAddWindow()
+        {
+            var vm = new AddRecordViewModel();
+            // 追加用ウィンドウのインスタンスを作成し、DataContextにViewModelをセット(画面とViewModelを紐づけ)
+            var window = new Views.AddRecordWindow { DataContext = vm };
+
+            // ウィンドウを閉じる処理をセット
+            vm.CloseAction = () => window.DialogResult = true;
+
+            // モーダルダイアログとして表示
+            // window.ShowDialog()で追加用画面が開きモーダルなので以降の処理は待機状態。
+            // 追加用画面側の追加ボタン押下処理の最後にAction?.Invoke()でDialogResult=trueになりwindow.Close()が自動的に呼ばれ画面が閉じる。
+            // その後、ここに戻ってきてif文の中が実行される。
+            if (window.ShowDialog() == true && vm.NewRecord != null)
+            {
+                // 全データリストに追加
+                _allRecords.Add(vm.NewRecord);
+
+                // フィルタを再適用
+                ApplyFilter();
+
+                // カテゴリ一覧に新しいカテゴリがあれば追加
+                if (!Categories.Contains(vm.NewRecord.Category))
+                {
+                    Categories.Add(vm.NewRecord.Category);
+                }
+            }
+        }
+
+        [RelayCommand(CanExecute = nameof(CanExecuteFileOps))] //保存コマンドに、判定メソッドを紐付け
+        private void SaveFile()
+        {
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                StatusMessage = "保存先が見つかりません。一度ファイルを開いてください。";
+                return;
+            }
+
+            try
+            {
+                // フィルタ後のデータではなく、必ず「全データ」を保存する
+                _csvService.WriteCsv(_currentFilePath, _allRecords);
+                StatusMessage = "ファイルを保存しました！";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"保存エラー: {ex.Message}";
+            }
         }
     }
 }

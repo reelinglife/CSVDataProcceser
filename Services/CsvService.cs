@@ -49,7 +49,7 @@ namespace CsvDataProcessor.Services
         {
             var lines = new List<string> { "日付,商品名,カテゴリ,単価,数量" }; // ヘッダー
             lines.AddRange(records.Select(r => $"{r.Date:yyyy/MM/dd},{r.ProductName},{r.Category},{r.Price},{r.Quantity}"));
-            File.WriteAllLines(filePath, lines);
+            File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
         }
     }
 }
